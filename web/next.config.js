@@ -1,24 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   reactStrictMode: true,
-  output: 'standalone',
   transpilePackages: ['@pet360/shared'],
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
+    unoptimized: true,
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/:path*`,
-      },
-    ];
-  },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
