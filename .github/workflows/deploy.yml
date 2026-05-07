@@ -2,8 +2,8 @@ name: Deploy Next.js frontend to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
-    paths: ["web/**"]  # Only trigger when web folder changes
+    branches: ["dev"]  # or "master" - whichever has your code
+    paths: ["web/**"]  # Trigger when web folder changes
   workflow_dispatch:
 
 permissions:
@@ -27,18 +27,20 @@ jobs:
         with:
           node-version: "20"
       
-      - name: Install dependencies (frontend only)
-        working-directory: ./web   # Navigate into web folder
-        run: npm ci
+      - name: Install dependencies
+        working-directory: ./web
+        run: npm ci  # or yarn install / pnpm install
       
       - name: Build Next.js static export
-        working-directory: ./web   # Build inside web folder
-        run: npx next build
+        working-directory: ./web
+        run: npm run build  # Make sure your package.json has "build" script
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./web/out   # The static files are in web/out
+          path: ./web/out  # Static files from Next.js export
 
   deploy:
     environment:
