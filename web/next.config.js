@@ -4,6 +4,7 @@ const nextConfig = {
   // output: 'standalone',
   transpilePackages: ['@pet360/shared'],
   images: {
+    unoptimized: true,  // ← ADD THIS LINE
     remotePatterns: [
       {
         protocol: 'https',
